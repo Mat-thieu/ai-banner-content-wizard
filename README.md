@@ -2,6 +2,7 @@
 
 Sample project for a basic banner content generator.
 
+![Screenshot 2025-05-23 155406](https://github.com/user-attachments/assets/d6471f6c-c04d-4791-8894-843c8c432f76)
 
 ## Running the project
 
