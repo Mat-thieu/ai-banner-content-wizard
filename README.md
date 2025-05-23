@@ -24,6 +24,29 @@ sail artisan key:generate
 - `resources/views/livewire/content-wizard-form.blade.php`
 - `resources/views/livewire/banner-previewer.blade.php`
 
+## The value of AI within this project
+
+For generating small pieces of marketing content, as requested for this project, AI seems to be a good fit, so long as the following is considered;
+- Is the context provided in Campaign Description sufficient? Providing a good prompt isn't always straightforward
+    - A common feature that helps with providng the correct context for a field like this is a separate LLM which helps refining your prompt. Pointing out where you may elaborate on your campaign description etc. After users have been able to verify this is a problem a feature to help refine Campaign Description using an LLM may be useful 
+- Can the user verify the content is sufficient for its designated use?
+    - For this project I've opted to display the content in a simple banner preview with the option to change aspect ratio, so that the user can verify its appearance first
+- In the prompt resulting in the generated content, the more context the better
+    - If the platform in which this tool runs has more information on the client, for example which industry this campaign is for, it can also be provided to create better fitting content
+ 
+## Collaboration
+
+For continued development of a feature like this it may become important to set up some unit tests to verify you don't break pre-existing features, or features added by another developer. For one the PromptService should be tested using the TestProvider, especially as more features like streaming are added. Frontend tests using playwright can also be considered, for example testing the BannerPreviewer in isolation.
+
+A general framework for working on the same feauture using git can look as follows;
+- Create a feature branch `FEAUTURE-ID_FEATURE-NAME`
+- Create a branch for each task within the feature, discussed ahead of time `FEATURE-ID_TASK_DESCRIPTION`
+    - Usually you work alone on a task like this. You create PRs against the main feature branch
+
+As for collaboration on a feature like this, depending on what needs to be done, I would split up the work in such a way that you're not in eachothers way. Sometimes this is a frontend/backend split, other times eachs gets a designated service, library or namespace to work on. The edges of where your changes meet need to be discussed ahead of time and so a short technical planning of upcoming features where we settle on the implementation is useful. It's important to split the feature up in tasks regardless.
+
+For reviewing, PRs should be sent to the person(s) you're collaborating with to verify the code will integrate with their existing or upcoming changes to the feature branch.
+
 ## Challenges
 
 Time spent on the project was closer to 6 hours rather than 4, a lot of it was spent reading into Livewire which I hadn't used before. Some additional time was also spent on adding some features I'd consider for a project like this.
