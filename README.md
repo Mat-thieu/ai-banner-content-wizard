@@ -8,10 +8,12 @@ Sample project for a basic banner content generator.
 The project uses the base laravel installation and is run via Sail.
 
 ```bash
-php artisan sail:install
+cp .env.example .env
+composer install
 npm install && npm run build
 sail up
 sail artisan migrate
+sail artisan key:generate
 ```
 
 ## Locations of interest
