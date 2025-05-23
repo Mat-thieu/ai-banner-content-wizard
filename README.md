@@ -31,7 +31,7 @@ For generating small pieces of marketing content, as requested for this project,
     - A common feature that helps with providng the correct context for a field like this is a separate LLM which helps refining your prompt. Pointing out where you may elaborate on your campaign description etc. After users have been able to verify this is a problem a feature to help refine Campaign Description using an LLM may be useful 
 - Can the user verify the content is sufficient for its designated use?
     - For this project I've opted to display the content in a simple banner preview with the option to change aspect ratio, so that the user can verify its appearance first
-- In the prompt resulting in the generated content, the more context the better
+- For the prompt resulting in the generated content, the more context the better
     - If the platform in which this tool runs has more information on the client, for example which industry this campaign is for, it can also be provided to create better fitting content
  
 ## Collaboration
