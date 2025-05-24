@@ -62,30 +62,27 @@
         </div>
     </div>
 
-    {{-- Preview Data Inputs --}}
+    {{-- Preview Data Results --}}
     <div class="mt-4 space-y-2">
-        @foreach ($previewData as $key => $value)
+        <template x-for="(text, key) in previewData" :key="key">
             <div class="flex items-center space-x-2 p-2 border border-neutral-200 dark:border-neutral-700 rounded-lg bg-neutral-50 dark:bg-neutral-800/50">
                 <x-flux::label
-                    for="previewData_{{ $key }}"
-                    class="w-36"
-                    x-text="labelMap['{{ $key }}']">
+                    class="w-36 whitespace-nowrap truncate"
+                    x-bind:title="labelMap[key] ? labelMap[key] : key"
+                    x-text="labelMap[key] ? labelMap[key] : key"
+                    x-bind:for="`previewData_${key}`">
                 </x-flux::label>
                 <x-flux::input
-                    value="{{ $value }}"
                     type="text"
                     readonly
-                    name="previewData_{{ $key }}" />
-                {{-- Extract to util? --}}
+                    x-bind:value="text"
+                    x-bind:name="`previewData_${key}`" />
                 <x-flux::button
-                    @click="navigator.clipboard.writeText(`{{ $value }}`).then(() => { 
-                        let originalText = $event.target.innerText; 
-                        $event.target.innerText = 'Copied!';
-                        setTimeout(() => { $event.target.innerText = originalText; }, 2000);
-                    });">
+                    x-data="copyTextButton(text)"
+                    @click="copyText($event)">
                     Copy
                 </x-flux::button>
             </div>
-        @endforeach
+        </template>
     </div>
 </div>

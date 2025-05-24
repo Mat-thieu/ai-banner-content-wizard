@@ -26,16 +26,13 @@
             </div>
 
             {{-- Campaign Briefing --}}
-            <div class="mt-4" x-data="{ 
-                charCount: 0,
-                maxLength: 300,
-            }">
+            <div class="mt-4" x-data="charCounter(300)">
                 <x-flux::label 
                     for="campaignDescription">
                     Campaign Description
                 </x-flux::label>
                 <x-flux::textarea 
-                    x-on:input="charCount = $el.value.length"
+                    x-on:input="updateCharCount($el.value)"
                     wire:model.defer="campaignDescription"
                     class="mt-2"
                     name="campaignDescription"
@@ -43,8 +40,10 @@
                     placeholder="Briefly describe your campaign and any specific messaging or themes you want to include.">
                 </x-flux::textarea>
                 <div class="flex justify-end">
-                    <div class="text-sm mt-1 text-neutral-500 dark:text-neutral-400">
-                        <span x-text="charCount"></span> / <span x-text="maxLength"></span>
+                    <div
+                        :class="overMaxLength ? 'text-red-500' : 'text-neutral-500 dark:text-neutral-400'"
+                        class="text-sm mt-1">
+                        <span x-html="charCountMarkup"></span>
                     </div>
                 </div>
                 @error('campaignDescription') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
@@ -61,11 +60,10 @@
                         'subheadline' => 'Subheadline',
                         'cta' => 'Call to Action',
                     ] as $key => $label)
-                        <label
-                            class="flex items-center space-x-2 p-2 cursor-pointer">
+                        <label class="flex items-center space-x-2 p-2 cursor-pointer">
                             <x-flux::checkbox 
                                 wire:model.defer="selectedContentTypes"
-                                value="{{ $key }}" />
+                                :value="$key" />
                             <span>{{ $label }}</span>
                         </label>
                     @endforeach
@@ -85,24 +83,26 @@
 
     {{-- Preview Placeholder Section --}}
     <x-widget class="flex items-center justify-center">
+        <div wire:loading.remove wire:target="generateContent">
+            @if (empty($generatedContent))
+                <div class="text-center">
+                    <h3 class="text-lg font-semibold text-neutral-700 dark:text-neutral-300">Content Preview</h3>
+                    <p class="text-neutral-500 dark:text-neutral-400 mt-1">Your generated content suggestions will appear here once you submit the form.</p>
+                </div>
+            @else
+                <div class="w-full h-full">
+                    <livewire:banner-previewer 
+                        :preview-data="$generatedContent" 
+                        :key="json_encode($generatedContent)" />
+                </div>
+            @endif
+        </div>
         <div wire:loading wire:target="generateContent" class="text-center">
             <h3 class="text-lg font-semibold text-neutral-700 dark:text-neutral-300">Generating content...</h3>
             <div class="flex items-center justify-center mt-2">
                 <x-flux::icon.loading />
             </div>
         </div>
-        @if (empty($generatedContent))
-        <div wire:loading.remove wire:target="generateContent" class="text-center">
-            <h3 class="text-lg font-semibold text-neutral-700 dark:text-neutral-300">Content Preview</h3>
-            <p class="text-neutral-500 dark:text-neutral-400 mt-1">Your generated content suggestions will appear here once you submit the form.</p>
-        </div>
-        @else
-            <div wire:loading.remove wire:target="generateContent" class="w-full h-full">
-                <livewire:banner-previewer 
-                    :preview-data="$generatedContent" 
-                    :key="json_encode($generatedContent)" />
-            </div>
-        @endif
     </x-widget>
 </div>
 
