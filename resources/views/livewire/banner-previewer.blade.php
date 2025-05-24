@@ -1,23 +1,22 @@
 <div
     x-data="{
         previewData: @entangle('previewData'),
-        availableAspectRatios: [
-            { label: '1:1', value: '1/1', class: 'aspect-[1/1]' },
-            { label: '16:9', value: '16/9', class: 'aspect-[16/9]' },
-            { label: '4:3', value: '4/3', class: 'aspect-[4/3]' },
-            { label: '2:1', value: '2/1', class: 'aspect-[2/1]' },
-            { label: '3:2', value: '3/2', class: 'aspect-[3/2]' },
-            { label: '9:16', value: '9/16', class: 'aspect-[9/16]' },
-        ],
+        aspectRatioClassMap: {
+            '1:1': 'aspect-[1/1]',
+            '16:9': 'aspect-[16/9]',
+            '4:3': 'aspect-[4/3]',
+            '2:1': 'aspect-[2/1]',
+            '3:2': 'aspect-[3/2]',
+            '9:16': 'aspect-[9/16]',
+        },
         labelMap: {
             'headline': 'Headline',
             'subheadline': 'Subheadline',
             'cta': 'Call to Action',
         },
-        selectedAspectRatio: '1/1',
+        selectedAspectRatio: $persist('2:1').as('banner-preview.selectedAspectRatio'),
         get currentAspectRatioClass() {
-            const ratio = this.availableAspectRatios.find(r => r.value === this.selectedAspectRatio);
-            return ratio ? ratio.class : '';
+            return this.aspectRatioClassMap[this.selectedAspectRatio];
         },
     }"
     class="w-full h-full">
@@ -31,11 +30,15 @@
         </label>
         <x-flux::select
             id="aspectRatioSelect"
-            x-model="selectedAspectRatio"
-            class="my-3">
-            <template x-for="ratio in availableAspectRatios" :key="ratio.value">
-                <option :value="ratio.value" x-text="ratio.label"></option>
-            </template>
+            class="my-3"
+            x-model="selectedAspectRatio">
+            {{-- Prefer to loop these from JS, but there's an ordering issue in Alpine, looping options and x-model --}}
+            <option value="1:1">1:1</option>
+            <option value="16:9">16:9</option>
+            <option value="4:3">4:3</option>
+            <option value="2:1">2:1</option>
+            <option value="3:2">3:2</option>
+            <option value="9:16">9:16</option>
         </x-flux::select>
     </div>
 
